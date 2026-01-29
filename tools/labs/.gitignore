@@ -10,3 +10,7 @@ disk2.img
 .modinst
 /out/
 /rootfs
+!/skels/
+/skels/**
+!/skels/kernel_modules/
+!/skels/kernel_modules/**

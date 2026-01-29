@@ -1,0 +1,1 @@
+cmd_/home/markus/dev/linux/tools/labs/skels/./kernel_modules/7-list-proc/list_proc.mod := { echo  /home/markus/dev/linux/tools/labs/skels/./kernel_modules/7-list-proc/list_proc.o;  echo; } > /home/markus/dev/linux/tools/labs/skels/./kernel_modules/7-list-proc/list_proc.mod

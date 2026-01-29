@@ -1,0 +1,1 @@
+cmd_/home/markus/dev/linux/tools/labs/skels/./kernel_modules/1-2-test-mod/hello_mod.mod := { echo  /home/markus/dev/linux/tools/labs/skels/./kernel_modules/1-2-test-mod/hello_mod.o;  echo; } > /home/markus/dev/linux/tools/labs/skels/./kernel_modules/1-2-test-mod/hello_mod.mod
