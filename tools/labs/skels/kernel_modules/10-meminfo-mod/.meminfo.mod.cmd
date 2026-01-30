@@ -1,0 +1,1 @@
+cmd_/home/markus/dev/linux/tools/labs/skels/./kernel_modules/10-meminfo-mod/meminfo.mod := { echo  /home/markus/dev/linux/tools/labs/skels/./kernel_modules/10-meminfo-mod/meminfo.o;  echo; } > /home/markus/dev/linux/tools/labs/skels/./kernel_modules/10-meminfo-mod/meminfo.mod

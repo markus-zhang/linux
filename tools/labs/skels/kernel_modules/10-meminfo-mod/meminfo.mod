@@ -1,0 +1,2 @@
+/home/markus/dev/linux/tools/labs/skels/./kernel_modules/10-meminfo-mod/meminfo.o
+
