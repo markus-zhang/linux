@@ -1,1 +1,0 @@
-cmd_/home/markus/dev/linux/tools/labs/skels/./kernel_modules/4-multi-mod/mod2.mod := { echo  /home/markus/dev/linux/tools/labs/skels/./kernel_modules/4-multi-mod/mod2.o;  echo; } > /home/markus/dev/linux/tools/labs/skels/./kernel_modules/4-multi-mod/mod2.mod

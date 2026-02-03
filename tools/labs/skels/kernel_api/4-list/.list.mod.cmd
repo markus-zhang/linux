@@ -1,0 +1,1 @@
+cmd_/home/markus/dev/linux/tools/labs/skels/./kernel_api/4-list/list.mod := { echo  /home/markus/dev/linux/tools/labs/skels/./kernel_api/4-list/list.o;  echo; } > /home/markus/dev/linux/tools/labs/skels/./kernel_api/4-list/list.mod

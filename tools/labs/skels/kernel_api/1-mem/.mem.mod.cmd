@@ -1,0 +1,1 @@
+cmd_/home/markus/dev/linux/tools/labs/skels/./kernel_api/1-mem/mem.mod := { echo  /home/markus/dev/linux/tools/labs/skels/./kernel_api/1-mem/mem.o;  echo; } > /home/markus/dev/linux/tools/labs/skels/./kernel_api/1-mem/mem.mod

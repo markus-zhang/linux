@@ -14,3 +14,5 @@ disk2.img
 /skels/**
 !/skels/kernel_modules/
 !/skels/kernel_modules/**
+!/skels/kernel_api/
+!/skels/kernel_api/**

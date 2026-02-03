@@ -1,0 +1,1 @@
+cmd_/home/markus/dev/linux/tools/labs/skels/./kernel_api/3-memory/memory.mod := { echo  /home/markus/dev/linux/tools/labs/skels/./kernel_api/3-memory/memory.o;  echo; } > /home/markus/dev/linux/tools/labs/skels/./kernel_api/3-memory/memory.mod
