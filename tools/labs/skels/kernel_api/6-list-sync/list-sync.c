@@ -4,6 +4,8 @@
  * list-sync.c - Synchronize access to a list
  */
 
+#include "linux/export.h"
+#include "linux/spinlock_types.h"
 #include <linux/module.h>
 #include <linux/init.h>
 #include <linux/kernel.h>
@@ -25,6 +27,7 @@ struct task_info {
 static struct list_head head;
 
 /* TODO 1: you can use either a spinlock or rwlock, define it here */
+DEFINE_SPINLOCK(lock);
 
 static struct task_info *task_info_alloc(int pid)
 {
@@ -60,19 +63,29 @@ static void task_info_add_to_list(int pid)
 	struct task_info *ti;
 
 	/* TODO 1: Protect list, is this read or write access? */
+	/* NOTE: This is a read access -> No write executed */
+	spin_lock(&lock);
+
 	ti = task_info_find_pid(pid);
 	if (ti != NULL) {
 		ti->timestamp = jiffies;
 		atomic_inc(&ti->count);
 		/* TODO: Guess why this comment was added  here */
+		/* Gotta release the lock */
+		spin_unlock(&lock);
 		return;
 	}
 	/* TODO 1: critical section ends here */
+	/* NOTE: Remember to unlock here, too, because this is the other branch */
+	spin_unlock(&lock);
 
 	ti = task_info_alloc(pid);
 	/* TODO 1: protect list access, is this read or write access? */
+	/* This is a write access because we are calling list_add */
+	spin_lock(&lock);
 	list_add(&ti->list, &head);
 	/* TODO 1: critical section ends here */
+	spin_unlock(&lock);
 }
 
 void task_info_add_for_current(void)
@@ -83,6 +96,7 @@ void task_info_add_for_current(void)
 	task_info_add_to_list(next_task(next_task(current))->pid);
 }
 /* TODO 2: Export the kernel symbol */
+EXPORT_SYMBOL(task_info_add_for_current);
 
 void task_info_print_list(const char *msg)
 {
@@ -92,14 +106,18 @@ void task_info_print_list(const char *msg)
 	pr_info("%s: [ ", msg);
 
 	/* TODO 1: Protect list, is this read or write access? */
+	/* This is read access. We are just reading from the list, and then read from the element */
+	spin_lock(&lock);
 	list_for_each(p, &head) {
 		ti = list_entry(p, struct task_info, list);
 		pr_info("(%d, %lu) ", ti->pid, ti->timestamp);
 	}
 	/* TODO 1: Critical section ends here */
+	spin_unlock(&lock);
 	pr_info("]\n");
 }
 /* TODO 2: Export the kernel symbol */
+EXPORT_SYMBOL(task_info_print_list);
 
 void task_info_remove_expired(void)
 {
@@ -107,6 +125,8 @@ void task_info_remove_expired(void)
 	struct task_info *ti;
 
 	/* TODO 1: Protect list, is this read or write access? */
+	/* This is both read and write access -> they are going to find and delete elements! */
+	spin_lock(&lock);
 	list_for_each_safe(p, q, &head) {
 		ti = list_entry(p, struct task_info, list);
 		if (jiffies - ti->timestamp > 3 * HZ && atomic_read(&ti->count) < 5) {
@@ -115,8 +135,10 @@ void task_info_remove_expired(void)
 		}
 	}
 	/* TODO 1: Critical section ends here */
+	spin_unlock(&lock);
 }
 /* TODO 2: Export the kernel symbol */
+EXPORT_SYMBOL(task_info_remove_expired);
 
 static void task_info_purge_list(void)
 {
@@ -124,12 +146,15 @@ static void task_info_purge_list(void)
 	struct task_info *ti;
 
 	/* TODO 1: Protect list, is this read or write access? */
+	/* This is both read and write */
+	spin_lock(&lock);
 	list_for_each_safe(p, q, &head) {
 		ti = list_entry(p, struct task_info, list);
 		list_del(p);
 		kfree(ti);
 	}
 	/* TODO 1: Critical sections ends here */
+	spin_unlock(&lock);
 }
 
 static int list_sync_init(void)

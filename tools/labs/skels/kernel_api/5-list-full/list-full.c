@@ -44,7 +44,14 @@ static struct task_info *task_info_find_pid(int pid)
 	struct task_info *ti;
 
 	/* TODO 1: Look for pid and return task_info or NULL if not found */
-
+	list_for_each(p, &head)
+	{
+		ti = list_entry(p, struct task_info, list);
+		if (ti->pid == pid)
+		{
+			return ti;
+		}
+	}
 	return NULL;
 }
 
@@ -128,6 +135,8 @@ static void list_full_exit(void)
 	struct task_info *ti;
 
 	/* TODO 2: Ensure that at least one task is not deleted */
+	ti = list_entry(head.next, struct task_info, list);
+	ti->timestamp = jiffies - 1 * HZ;
 
 	task_info_remove_expired();
 	task_info_print_list("after removing expired");
